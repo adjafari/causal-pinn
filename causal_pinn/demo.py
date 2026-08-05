@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 from dataclasses import dataclass
 from math import exp, pi, sin, sqrt
 from pathlib import Path
@@ -214,14 +215,48 @@ def plot_comparison(data: dict[str, object], results: list[ReconstructionResult]
     return output_path
 
 
-def main() -> None:
-    """CLI entry point for generating the comparison figure."""
+def _build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Run the causal PINN demo and write the comparison SVG.",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("outputs/causal_pinn_comparison.svg"),
+        help="Path for the generated SVG comparison plot.",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=7,
+        help="Random seed used to generate sparse noisy observations.",
+    )
+    return parser
 
-    data, results = build_comparison()
-    output = plot_comparison(data, results)
+
+def run_application(
+    seed: int = 7,
+    output_path: str | Path = "outputs/causal_pinn_comparison.svg",
+) -> Path:
+    """Run the full causal-PINN data-generation, reconstruction, and plotting app."""
+
+    data, results = build_comparison(seed=seed)
+    output = plot_comparison(data, results, output_path)
     print(f"Wrote {output}")
     for result in results:
-        print(f"{result.name}: RMSE={result.rmse:.4f}, Relative L2={result.relative_l2:.4f}, Physics residual={result.physics_residual:.4e}")
+        print(
+            f"{result.name}: RMSE={result.rmse:.4f}, "
+            f"Relative L2={result.relative_l2:.4f}, "
+            f"Physics residual={result.physics_residual:.4e}"
+        )
+    return output
+
+
+def main(argv: list[str] | None = None) -> None:
+    """CLI entry point for running the complete causal PINN application."""
+
+    args = _build_parser().parse_args(argv)
+    run_application(seed=args.seed, output_path=args.output)
 
 
 if __name__ == "__main__":

@@ -28,7 +28,19 @@ glance.
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python scripts/plot_causal_pinn_demo.py
+python -m causal_pinn
+```
+
+You can also choose the output path or random seed directly:
+
+```bash
+python -m causal_pinn --output outputs/custom_comparison.svg --seed 11
+```
+
+If the project is installed as a package, the same application is available as:
+
+```bash
+causal-pinn --output outputs/custom_comparison.svg
 ```
 
 The visualization is written to:
