@@ -6,6 +6,7 @@ from .demo import (
     generate_heat_equation_data,
     plot_comparison,
     reconstruct_field,
+    run_application,
 )
 
 __all__ = [
@@ -14,4 +15,5 @@ __all__ = [
     "generate_heat_equation_data",
     "plot_comparison",
     "reconstruct_field",
+    "run_application",
 ]

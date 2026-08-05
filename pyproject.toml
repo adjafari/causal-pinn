@@ -1,2 +1,11 @@
 [tool.pytest.ini_options]
 pythonpath = ["."]
+
+[project]
+name = "causal-pinn"
+version = "0.1.0"
+description = "Runnable causal PINN reconstruction and plotting demo."
+requires-python = ">=3.10"
+
+[project.scripts]
+causal-pinn = "causal_pinn.demo:main"
